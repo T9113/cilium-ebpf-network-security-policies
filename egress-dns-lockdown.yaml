@@ -1,0 +1,15 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: lock-dns-egress
+spec:
+  endpointSelector:
+    matchLabels:
+      app: payment-api
+  egress:
+  - toFQDNs:
+    - matchName: "api.stripe.com"
+    toPorts:
+    - ports:
+      - port: "443"
+        protocol: TCP
