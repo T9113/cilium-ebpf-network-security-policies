@@ -1,0 +1,22 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumNetworkPolicy
+metadata:
+  name: restrict-http-methods
+spec:
+  endpointSelector:
+    matchLabels:
+      app: payment-api
+  ingress:
+  - fromEndpoints:
+    - matchLabels:
+        app: frontend-gateway
+    toPorts:
+    - ports:
+      - port: "8080"
+        protocol: TCP
+      rules:
+        http:
+        - method: "GET"
+          path: "/healthz"
+        - method: "POST"
+          path: "/checkout"
